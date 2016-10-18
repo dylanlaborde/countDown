@@ -1,75 +1,85 @@
 (function(){
 	"use strict";
+	
 	var app = {
-		compt :150,
+		compt :10,
+		defaultTimer:10,
 		sec :undefined,
 		interval:null,
 		userInput:null,
+		
 		init: function(){
-			app.watcher();
-
+			this.watcher();
+			// app.userInput();
 		},
+
 		watcher : function(){
-			$("#start").on("click",app.start);
-			$("#stop_play").on("click",app.stop_play);
-			$("#reset").on("click",app.reset);
-				
+			var that = this ;
+			
+			$("#start").on("click",this.start.bind(this));
+			$("#stop_play").on("click",this.stop_play.bind(this));
+			$("#reset").on("click",this.reset.bind(this));
+
 		},
 		start : function(){
 			
-			app.interval = setInterval(app.decrement, 1000);
-			console.log(app.compt);
+			// app.userInput();
+
 			$("#stop_play").data("value", "play");
+			
+			// console.log($("#stop_play").data("value"));
+			
+			this.interval = setInterval(this.decrement.bind(this), 1000);
+			// console.log(this.compt);
 			
 			
 		},
 
 		stop_play : function(){
 			$("#stop_play").data("value", "stop");
-			console.log($("#stop_play").data("value", "stop"));
-			clearInterval(app.interval);
-			
+			clearInterval(this.interval);
 
 		},
 
 		reset : function(){
-			console.log("reset");
-			app.init();
+
+			this.compt = this.defaultTimer; 
+			this.update();
+
+
+			
 		},
 
 		decrement : function(){
-			app.compt--;
-			app.update();
+			this.compt--;
+			this.update();
 
 		},
 
 		update : function(){
-			app.min =(app.compt*60)/(3600);
-			app.sec = app.compt%60;
+			//console.log($("#stop_play").data("value"));
+			this.min =(app.compt*60)/(3600);
+			this.sec = app.compt%60;
 
-			console.log(parseInt(app.sec, 10));
+			//console.log(parseInt(this.sec, 10));
 
-			$("#timerMin").html(parseInt(app.min, 10));
-			$("#timerSec").html(app.sec);
+			$("#timerMin").html(parseInt(this.min, 10));
+			$("#timerSec").html(this.sec);
 			// console.log(app.sec);
 
 
-			if (app.compt === 0) {
-				alert("End")
-				
+			if (this.compt === 0) {
+				clearInterval(this.interval);
+
 			}
 		},
 
-		  userInput : function(){
-			 $("#userInputMin").val();
-
-		  },
-
-
-}
-
-
-app.init();
+		userInput : function(){
+			$("#userInputMin").val();
+			$("#userInputMin").val();
+		},
+	}
+	app.init();
 })();
 
 
